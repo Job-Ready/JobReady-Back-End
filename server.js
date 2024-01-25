@@ -2,9 +2,18 @@
 const express = require('express');
 const bodyParser = require('body-parser'); // For parsing JSON in request body
 const app = express();
-const port = 3000;
+const port = 3001;
+const cors = require('cors');
 
 app.use(bodyParser.json());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+};
+  
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('Hello, this is your resume builder backend!');
