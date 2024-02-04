@@ -12,7 +12,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.HOST || 'localhost';
 const cors = require('cors');
 
 const corsOptions = {
@@ -27,9 +27,9 @@ const { Pool } = require('pg')
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
+  sslmode: {
+    rejectUnauthorized: false,
+    require: true
   }
 })
 
@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
 
-app.listen(PORT, HOST, function() {
+app.listen(PORT, function() {
   console.log(`Server is running on ${HOST}:${PORT}`);
 });
 
