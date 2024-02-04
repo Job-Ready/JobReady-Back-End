@@ -33,6 +33,17 @@ const pool = new Pool({
   }
 })
 
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+
+app.get('/', (req, res) => {
+    res.send('Hello, this is your resume builder backend!');
+});
+
+app.listen(PORT, function() {
+  console.log(`Server is running on ${HOST}:${PORT}`);
+});
+
 pool.connect()
   .then(() => {
     console.log('Connected to PostgreSQL database');
@@ -58,17 +69,6 @@ pool.connect()
 //   .catch((err) => {
 //     console.error('Error connecting to PostgreSQL database', err);
 //   });
-
-app.use(bodyParser.json());
-app.use(cors(corsOptions));
-
-app.get('/', (req, res) => {
-    res.send('Hello, this is your resume builder backend!');
-});
-
-app.listen(PORT,function() {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 // Define User table
 // const createUserTable = `
