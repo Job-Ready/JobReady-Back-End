@@ -2,9 +2,6 @@ const path = require('path');
 require('dotenv').config({ 
     override: true,
     path: path.resolve(__dirname, 'development.env') ,
-    ssl: {
-        rejectUnauthorized: false, // Use this option only for development
-    }
 });
 
 // Path: server.js
@@ -22,15 +19,13 @@ const corsOptions = {
     optionsSuccessStatus: 204,
 };
 
-// PostgreSQL URL
 const { Pool } = require('pg')
-
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
+  // ssl: {
+  //   require: false,
+  //   rejectUnauthorized: false
+  // }
 })
 
 app.use(bodyParser.json());
@@ -40,18 +35,19 @@ app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
 
-app.listen(PORT, function() {
-  console.log(`Server is running on ${HOST}:${PORT}`);
-});
-
-pool.connect()
-  .then(() => {
+const startServer = async () => {
+  try {
+    await pool.connect();
     console.log('Connected to PostgreSQL database');
-  })
-  .catch((err) => {
+    app.listen(PORT, function () {
+      console.log(`Server is running on http://${HOST}:${PORT}`);
+    });
+  } catch (err) {
     console.error('Error connecting to PostgreSQL database', err);
-  });
+  }
+};
 
+startServer();
 
 // const { Client } = require('pg');
 // const client = new Client({
