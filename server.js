@@ -1,5 +1,11 @@
-import { Resume, Education, Experience, Skill } from './models';
-
+const path = require('path');
+require('dotenv').config({ 
+    override: true,
+    path: path.resolve(__dirname, 'development.env') ,
+    ssl: {
+        rejectUnauthorized: false, // Use this option only for development
+    }
+});
 
 // Path: server.js
 const express = require('express');
@@ -16,23 +22,22 @@ const corsOptions = {
     optionsSuccessStatus: 204,
 };
 
-// Database connection
-const sequelize = new Sequelize({
-    user: 'postgres',
-    password: 'konkazazis',
-    host: 'localhost',
-    port: 5432,
-    // database: 'JobReady-local',
-    dialect: 'postgres',
-})
+const { Client } = require('pg');
+const client = new Client({
+    user: process.env.USER,
+    password:   process.env.PASSWORD,
+    host: process.env.HOST,
+    port: process.env.PORT,
+    database: process.env.DATABASE,
+  });
 
-sequelize.authenticate()
-    .then(() => {
-        console.log('Connected to PostgreSQL');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+  client.connect()
+  .then(() => {
+    console.log('Connected to PostgreSQL database');
+  })
+  .catch((err) => {
+    console.error('Error connecting to PostgreSQL database', err);
+  });
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
@@ -65,3 +70,48 @@ app.post('/create-resume', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+
+
+// Define User table
+// const createUserTable = `
+//   CREATE TABLE IF NOT EXISTS users (
+//     id SERIAL PRIMARY KEY,
+//     fullname VARCHAR(255) UNIQUE,
+//     password VARCHAR(255),
+//     email VARCHAR(255) UNIQUE
+//   );
+// `;
+
+// // Define Resume table
+// const createResumeTable = `
+//   CREATE TABLE IF NOT EXISTS resumes (
+//     id SERIAL PRIMARY KEY,
+//     userId INTEGER REFERENCES users(id),
+//     title VARCHAR(255),
+//     summary TEXT
+//   );
+// `;
+
+// // Define Education table
+// const createEducationTable = `
+//   CREATE TABLE IF NOT EXISTS education (
+//     id SERIAL PRIMARY KEY,
+//     resumeId INTEGER REFERENCES resumes(id),
+//     institution VARCHAR(255),
+//     degree VARCHAR(255),
+//     start_date DATE,
+//     end_date DATE
+//   );
+// `;
+
+// // Execute table creation queries
+// client.query(createUserTable)
+//   .then(() => client.query(createResumeTable))
+//   .then(() => client.query(createEducationTable))
+//   .then(() => console.log('Tables created successfully'))
+//   .catch((err) => console.error('Error creating tables:', err))
+//   .finally(() => client.end());
+
+// // Export the client for use in other parts of your application
+// module.exports = client;
