@@ -13,6 +13,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
 const cors = require('cors');
 
 const corsOptions = {
@@ -65,7 +66,7 @@ app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
 
-app.listen(PORT,'0.0.0.0', function() {
+app.listen(PORT,HOST, function() {
     console.log(`Server is running on port ${PORT}`);
 });
 
