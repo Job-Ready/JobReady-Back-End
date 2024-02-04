@@ -22,14 +22,23 @@ const corsOptions = {
     optionsSuccessStatus: 204,
 };
 
+// PostgreSQL URL
+const postgresURL = process.env.DATABASE_URL;
+
+// Parse the URL
+const params = url.parse(postgresURL);
+const auth = params.auth.split(':');
+
+// Create the client configuration
+
 const { Client } = require('pg');
 const client = new Client({
-    user: process.env.USER,
-    password:   process.env.PASSWORD,
-    host: process.env.HOST,
-    port: process.env.PORT,
-    database: process.env.DATABASE,
-  });
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+});
 
   client.connect()
   .then(() => {
