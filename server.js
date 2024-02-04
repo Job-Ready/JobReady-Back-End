@@ -9,11 +9,10 @@ require('dotenv').config({
 
 // Path: server.js
 const express = require('express');
-const { Sequelize, DataTypes } = require('sequelize');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const HOST = '0.0.0.0';
+const HOST = process.env.HOST || 'localhost';
 const cors = require('cors');
 
 const corsOptions = {
@@ -67,7 +66,7 @@ app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
 
-app.listen(PORT,HOST, function() {
+app.listen(PORT,function() {
     console.log(`Server is running on port ${PORT}`);
 });
 
