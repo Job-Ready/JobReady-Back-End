@@ -23,30 +23,41 @@ const corsOptions = {
 };
 
 // PostgreSQL URL
-const postgresURL = process.env.DATABASE_URL;
-
-// Parse the URL
-const params = url.parse(postgresURL);
-const auth = params.auth.split(':');
-
-// Create the client configuration
-
+var connectionString = process.env.DATABASE_URL;
 const { Client } = require('pg');
+
 const client = new Client({
-  user: auth[0],
-  password: auth[1],
-  host: params.hostname,
-  port: params.port,
-  database: params.pathname.split('/')[1],
+  connectionString: connectionString,
+  ssl: {
+    rejectUnauthorized: false, // You may need to set this to true based on your PostgreSQL server configuration
+  },
 });
 
-  client.connect()
+client.connect()
   .then(() => {
     console.log('Connected to PostgreSQL database');
   })
   .catch((err) => {
     console.error('Error connecting to PostgreSQL database', err);
   });
+
+
+// const { Client } = require('pg');
+// const client = new Client({
+//   user: auth[0],
+//   password: auth[1],
+//   host: params.hostname,
+//   port: params.port,
+//   database: params.pathname.split('/')[1],
+// });
+
+//   client.connect()
+//   .then(() => {
+//     console.log('Connected to PostgreSQL database');
+//   })
+//   .catch((err) => {
+//     console.error('Error connecting to PostgreSQL database', err);
+//   });
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
