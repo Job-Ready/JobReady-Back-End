@@ -22,10 +22,10 @@ const corsOptions = {
 const { Pool } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // ssl: {
-  //   require: process.env.SSL_REQUIRED,
-  //   rejectUnauthorized: process.env.SSL_UNAUTHORIZED,
-  // }
+  ssl: {
+    require: false,
+    rejectUnauthorized: false,
+  }
 })
 
 app.use(bodyParser.json());
