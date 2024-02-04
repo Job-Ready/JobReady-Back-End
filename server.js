@@ -12,7 +12,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '0.0.0.0';
 const cors = require('cors');
 
 const corsOptions = {
@@ -32,6 +32,17 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 })
+
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+
+app.get('/', (req, res) => {
+    res.send('Hello, this is your resume builder backend!');
+});
+
+app.listen(PORT, HOST, function() {
+  console.log(`Server is running on ${HOST}:${PORT}`);
+});
 
 pool.connect()
   .then(() => {
@@ -58,17 +69,6 @@ pool.connect()
 //   .catch((err) => {
 //     console.error('Error connecting to PostgreSQL database', err);
 //   });
-
-app.use(bodyParser.json());
-app.use(cors(corsOptions));
-
-app.get('/', (req, res) => {
-    res.send('Hello, this is your resume builder backend!');
-});
-
-app.listen(PORT,function() {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 // Define User table
 // const createUserTable = `
