@@ -65,11 +65,9 @@ app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+app.listen(PORT,  '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
 });
-
-
 
 // Define User table
 // const createUserTable = `
