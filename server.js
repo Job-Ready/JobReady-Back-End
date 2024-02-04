@@ -23,17 +23,16 @@ const corsOptions = {
 };
 
 // PostgreSQL URL
-var connectionString = process.env.DATABASE_URL;
-const { Client } = require('pg');
+const { Pool } = require('pg')
 
-const client = new Client({
-  connectionString: connectionString,
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false, // You may need to set this to true based on your PostgreSQL server configuration
-  },
-});
+    rejectUnauthorized: false
+  }
+})
 
-client.connect()
+pool.connect()
   .then(() => {
     console.log('Connected to PostgreSQL database');
   })
@@ -65,28 +64,6 @@ app.use(cors(corsOptions));
 app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
-
-app.post('/create-resume', async (req, res) => {
-    try {
-        const { userId, title, summary, educations, experiences, skills } = req.body;
-
-        // Create a new resume using Sequelize models
-        const newResume = await Resume.create({ userId, title, summary });
-
-        // Create education entries associated with the new resume
-        await Education.bulkCreate(
-            educations.map(education => ({ resumeId: newResume.id, ...education }))
-        );
-
-        // ... Similar logic for experiences and skills
-
-        res.status(201).json({ message: 'Resume created successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
