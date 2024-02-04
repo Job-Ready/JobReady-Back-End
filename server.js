@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
     res.send('Hello, this is your resume builder backend!');
 });
 
-app.listen(PORT,  '0.0.0.0', () => {
+app.listen(PORT,'0.0.0.0', function() {
     console.log(`Server is running on port ${PORT}`);
 });
 
