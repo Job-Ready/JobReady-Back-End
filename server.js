@@ -1,7 +1,7 @@
 const path = require('path');
 require('dotenv').config({ 
     override: true,
-    path: path.resolve(__dirname, 'development.env') ,
+    path: path.resolve(__dirname, '.env') ,
 });
 
 // Path: server.js
@@ -23,8 +23,8 @@ const { Pool } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    require: false,
-    rejectUnauthorized: false
+    require: process.env.SSL_REQUIRED,
+    rejectUnauthorized: process.env.SSL_UNAUTHORIZED,
   }
 })
 
