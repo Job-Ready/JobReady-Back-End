@@ -23,7 +23,7 @@ const createResumeTable = `
 `;
 
 module.exports = {
-    createUserTable,
-    createResumeTable,
-  };
+  createUserTable,
+  createResumeTable,
+};
 

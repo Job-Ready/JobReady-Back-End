@@ -6,7 +6,7 @@ const {
 const path = require('path');
 require('dotenv').config({ 
     override: true,
-    path: path.resolve(__dirname, 'development.env') ,
+    path: path.resolve(__dirname, '.env') ,
 });
 
 // Path: server.js
@@ -14,7 +14,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || 'localhost';
 const cors = require('cors');
 
 const corsOptions = {
@@ -27,10 +26,12 @@ const corsOptions = {
 const { Pool } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // ssl: {
-  //   require: false,
-  //   rejectUnauthorized: false
-  // }
+
+  // Comment for local development
+  ssl: {
+    require: false,
+    rejectUnauthorized: false
+  }
 })
 
 app.use(bodyParser.json());
