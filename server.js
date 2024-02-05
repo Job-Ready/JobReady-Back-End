@@ -1,7 +1,7 @@
 const {
   createUserTable,
   createResumeTable,
-} = require('../JobReady-Back-End/models');
+} = require('./modules/models');
 
 const path = require('path');
 require('dotenv').config({ 
@@ -14,6 +14,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
+const HOST = process.env.HOST || 'localhost';
 const cors = require('cors');
 
 const corsOptions = {
