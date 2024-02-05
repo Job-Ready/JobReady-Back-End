@@ -12,6 +12,7 @@ require('dotenv').config({
 // Path: server.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || 'localhost';
@@ -35,11 +36,22 @@ const pool = new Pool({
   }
 })
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
-    res.send('Hello, this is your resume builder backend!');
+  // Read the content of index.html
+  fs.readFile('index.html', 'utf8', (err, data) => {
+      if (err) {
+          console.error('Error reading index.html:', err);
+          res.status(500).send('Internal Server Error');
+          return;
+      }
+
+      // Send the HTML content as the response
+      res.send(data);
+  });
 });
 
 app.post('/signup', async (req, res) => {
