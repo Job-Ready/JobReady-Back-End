@@ -30,10 +30,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 
   // Comment for local development
-  ssl: {
-    require: false,
-    rejectUnauthorized: false
-  }
+  // ssl: {
+  //   require: false,
+  //   rejectUnauthorized: false
+  // }
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -86,15 +86,34 @@ app.post('/login', async (req, res) => {
     const result = await pool.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, password]);
 
     if (result.rows.length > 0) {
-
-      res.json({ message: 'Login successful', token: secretKey});
+      res.status(200).json({ message: 'Login successful' });
     } else {
-      // Invalid credentials
-      res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: 'Invalid credentials'});
     }
   } catch (error) {
     console.error('Login failed:', error.message);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.post('/create-resume', async (req, res) => {
+  try {
+    console.log('req.body:', req.body);
+    const { userId, title, workExperience, education, languages, projects, skills, personalDetails } = req.body;
+    
+    // Add any validation checks for the data here if needed
+
+    const createResumeQuery = `
+      INSERT INTO resumes (userId, title, workExperience, education, languages, projects, skills, personalDetails)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *;`;
+
+    const result = await pool.query(createResumeQuery, [userId, title, workExperience, education, languages, projects, skills, personalDetails]);
+
+    res.status(201).json({ resume: result.rows[0], message: 'Resume created successfully' });
+  } catch (error) {
+    console.error('Error creating resume:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
