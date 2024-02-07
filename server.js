@@ -17,6 +17,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || 'localhost';
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+// Secret key used to sign the JWT token (keep it secret and don't hardcode it)
+const secretKey = 'your-secret-key';
+
+function generateToken(user) {
+  return jwt.sign({ user }, 'your-secret-key', { expiresIn: '1h' });
+}
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -77,16 +84,17 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-const secretKey = 'your-secret-key';
 app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // Check credentials against the database
     const result = await pool.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, password]);
+    const user = result.rows[0];
 
     if (result.rows.length > 0) {
-      res.status(200).json({ message: 'Login successful' });
+      const token = generateToken(user);
+      res.status(200).json({ message: 'Login successful', token, user: user.fullname});
     } else {
       res.status(401).json({ message: 'Invalid credentials'});
     }
