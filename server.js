@@ -19,7 +19,7 @@ const HOST = process.env.HOST || 'localhost';
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 // Secret key used to sign the JWT token (keep it secret and don't hardcode it)
-const SECRET_KEY = 'your-secret-key';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -33,10 +33,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 
   // Comment for local development
-  // ssl: {
-  //   require: false,
-  //   rejectUnauthorized: false
-  // }
+  ssl: {
+    require: false,
+    rejectUnauthorized: false
+  }
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -133,7 +133,7 @@ app.get('/get-resume/:userId', async (req, res) => {
 
     const getResumeQuery = `
       SELECT * FROM resumes
-      WHERE id = $1;`;
+      WHERE userid = $1;`;
 
     const result = await pool.query(getResumeQuery, [userId]);
 
@@ -141,7 +141,7 @@ app.get('/get-resume/:userId', async (req, res) => {
       return res.status(404).json({ message: 'Resume not found' });
     }
 
-    res.status(200).json({ resume: result.rows[0] });
+    res.status(200).json({ resume: result.rows });
   } catch (error) {
     console.error('Error fetching resume:', error);
     res.status(500).json({ error: error.message });
