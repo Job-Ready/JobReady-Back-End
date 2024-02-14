@@ -79,9 +79,8 @@ app.post('/signup', async (req, res) => {
 
     const result = await pool.query(createUserQuery, [fullname, email, password]);
 
-    // Assuming you have a 'users' table in your database
-
-    res.status(201).json({ user: result.rows[0], message: 'User created successfully' });
+    const token = jwt.sign({ id: result.rows[0].id  }, SECRET_KEY, { expiresIn: '1h' });
+    res.json({ token, Id: result.rows[0].id});
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: error.message });
