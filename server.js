@@ -22,7 +22,15 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin:  function (origin, callback) {
+      // Allow requests from localhost and the online frontend
+      const allowedOrigins = ['http://localhost:3000', 'https://jobready-frontend-a5f107d0de7b.herokuapp.com/'];
+      if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
