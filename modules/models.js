@@ -13,12 +13,12 @@ const createResumeTable = `
     id SERIAL PRIMARY KEY,
     userId INTEGER REFERENCES users(id),
     title VARCHAR(255),
-    workExperience JSONB,
-    education JSONB,
-    languages JSONB,
-    projects JSONB,
-    skills JSONB,
-    personalDetails JSONB
+    workExperiences JSONB[],
+    education JSONB[],
+    languages JSONB[],
+    projects JSONB[],
+    skills JSONB[],
+    details JSONB
   );
 `;
 

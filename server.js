@@ -91,7 +91,7 @@ app.post('/login', async (req, res) => {
     if (result.rows.length > 0) {
       //const token = generateToken(user);
       const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '1h' });
-      res.json({ token });
+      res.json({ token, Id: user.id });
     } else {
       res.status(401).json({ message: 'Invalid credentials'});
     }
@@ -104,20 +104,46 @@ app.post('/login', async (req, res) => {
 app.post('/create-resume', async (req, res) => {
   try {
     console.log('req.body:', req.body);
-    const { userId, title, workExperience, education, languages, projects, skills, personalDetails } = req.body;
+    const { userId, details,
+      workExperiences,
+      projects,
+      education,
+      languages,
+      skills } = req.body;
     
     // Add any validation checks for the data here if needed
 
     const createResumeQuery = `
-      INSERT INTO resumes (userId, title, workExperience, education, languages, projects, skills, personalDetails)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO resumes (userId, details, workExperiences, projects, education, languages, skills)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;`;
 
-    const result = await pool.query(createResumeQuery, [userId, title, workExperience, education, languages, projects, skills, personalDetails]);
+    const result = await pool.query(createResumeQuery, [userId, details, workExperiences, projects, education, languages, skills]);
 
     res.status(201).json({ resume: result.rows[0], message: 'Resume created successfully' });
   } catch (error) {
     console.error('Error creating resume:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/get-resume/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const getResumeQuery = `
+      SELECT * FROM resumes
+      WHERE id = $1;`;
+
+    const result = await pool.query(getResumeQuery, [userId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+
+    res.status(200).json({ resume: result.rows[0] });
+  } catch (error) {
+    console.error('Error fetching resume:', error);
     res.status(500).json({ error: error.message });
   }
 });
