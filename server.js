@@ -31,9 +31,10 @@ const corsOptions = {
           callback(new Error('Not allowed by CORS'));
       }
   },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
+  accessControlAllowOrigin: ['http://localhost:3000', 'https://jobready-frontend-a5f107d0de7b.herokuapp.com/'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
 };
 
 const { Pool } = require('pg')
