@@ -12,6 +12,7 @@ require('dotenv').config({
 // Path: server.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -59,6 +60,7 @@ const pool = new Pool({
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
