@@ -21,6 +21,17 @@ const jwt = require('jsonwebtoken');
 // Secret key used to sign the JWT token (keep it secret and don't hardcode it)
 const SECRET_KEY = process.env.SECRET_KEY;
 
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ message: 'Authentication token required' });
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) return res.status(403).json({ message: 'Invalid token' });
+    req.user = user;
+    next();
+  });
+};
+
 const corsOptions = {
     origin:  function (origin, callback) {
       // Allow requests from localhost and the online frontend
@@ -41,10 +52,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 
   // Comment for local development
-  ssl: {
-    require: false,
-    rejectUnauthorized: false
-  }
+  // ssl: {
+  //   require: false,
+  //   rejectUnauthorized: false
+  // }
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -108,7 +119,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/create-resume', async (req, res) => {
+app.post('/create-resume', authenticateToken, async (req, res) => {
   try {
     console.log('req.body:', req.body);
     const { userId, details,
