@@ -53,10 +53,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 
   // Comment for local development
-  ssl: {
-    require: false,
-    rejectUnauthorized: false
-  }
+  // ssl: {
+  //   require: false,
+  //   rejectUnauthorized: false
+  // }
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -167,6 +167,39 @@ app.get('/get-resume/:userId', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.put('/update-resume/:resumeId', authenticateToken, async (req, res) => {
+  try {
+    const resumeId = req.params.resumeId;
+    console.log('req.body:', req.body);
+    const { details, workExperiences, projects, education, languages, skills } = req.body;
+
+    // Add any validation checks for the data here if needed
+
+    const updateResumeQuery = `
+      UPDATE resumes 
+      SET details = $1, 
+          workExperiences = $2, 
+          projects = $3, 
+          education = $4, 
+          languages = $5, 
+          skills = $6
+      WHERE id = $7
+      RETURNING *;`;
+
+    const result = await pool.query(updateResumeQuery, [details, workExperiences, projects, education, languages, skills, resumeId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+
+    res.status(200).json({ resume: result.rows[0], message: 'Resume updated successfully' });
+  } catch (error) {
+    console.error('Error updating resume:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 const startServer = async () => {
   try {
