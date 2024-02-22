@@ -134,8 +134,8 @@ app.post('/create-resume', authenticateToken, async (req, res) => {
     // Add any validation checks for the data here if needed
 
     const createResumeQuery = `
-      INSERT INTO resumes (userId, details, workExperiences, projects, education, languages, skills)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO resumes (userId, details, workExperiences, projects, education, languages, skills, last_change)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
       RETURNING *;`;
 
     const result = await pool.query(createResumeQuery, [userId, details, workExperiences, projects, education, languages, skills]);
