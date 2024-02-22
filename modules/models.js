@@ -18,7 +18,8 @@ const createResumeTable = `
     languages JSONB[],
     projects JSONB[],
     skills JSONB[],
-    details JSONB
+    details JSONB,
+    last_change TIMESTAMP
   );
 `;
 
