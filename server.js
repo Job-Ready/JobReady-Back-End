@@ -124,7 +124,13 @@ app.post('/login', async (req, res) => {
 app.post('/create-resume', authenticateToken, async (req, res) => {
   try {
     console.log('req.body:', req.body);
-    const { userId, details,
+    const { userId, fullname, title,
+      email,
+      phone,
+      repos,
+      porfolio,
+      country,
+      linkedin,
       workExperiences,
       projects,
       education,
@@ -134,11 +140,11 @@ app.post('/create-resume', authenticateToken, async (req, res) => {
     // Add any validation checks for the data here if needed
 
     const createResumeQuery = `
-      INSERT INTO resumes (userId, details, workExperiences, projects, education, languages, skills, last_change)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+      INSERT INTO resumes (userId, fullname, title, email, phone, repos, portfolio, country, linkedin, workExperiences, projects, education, languages, skills, last_change)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
       RETURNING *;`;
 
-    const result = await pool.query(createResumeQuery, [userId, details, workExperiences, projects, education, languages, skills]);
+    const result = await pool.query(createResumeQuery, [userId, fullname, title, email, phone, repos, porfolio, country, linkedin, workExperiences, projects, education, languages, skills]);
 
     res.status(201).json({ resume: result.rows[0], message: 'Resume created successfully' });
   } catch (error) {
@@ -172,22 +178,27 @@ app.put('/update-resume/:resumeId', authenticateToken, async (req, res) => {
   try {
     const resumeId = req.params.resumeId;
     console.log('req.body:', req.body);
-    const { details, workExperiences, projects, education, languages, skills } = req.body;
-
-    // Add any validation checks for the data here if needed
+    const { fullname, title, email, phone, repos, portfolio, country, linkedin, workExperiences, projects, education, languages, skills } = req.body;
 
     const updateResumeQuery = `
       UPDATE resumes 
-      SET details = $1, 
-          workExperiences = $2, 
-          projects = $3, 
-          education = $4, 
-          languages = $5, 
-          skills = $6
-      WHERE id = $7
+      SET fullname = COALESCE($1, fullname),
+          title = COALESCE($2, title), 
+          email = COALESCE($3, email),
+          phone = COALESCE($4, phone),
+          repos = COALESCE($5, repos),
+          portfolio = COALESCE($6, portfolio),
+          country = COALESCE($7, country),
+          linkedin = COALESCE($8, linkedin),
+          workExperiences = COALESCE($9, workExperiences), 
+          projects = COALESCE($10, projects), 
+          education = COALESCE($11, education), 
+          languages = COALESCE($12, languages), 
+          skills = COALESCE($13, skills)
+      WHERE id = $14
       RETURNING *;`;
 
-    const result = await pool.query(updateResumeQuery, [details, workExperiences, projects, education, languages, skills, resumeId]);
+    const result = await pool.query(updateResumeQuery, [fullname, title, email, phone, repos, portfolio, country, linkedin, workExperiences, projects, education, languages, skills, resumeId]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Resume not found' });
