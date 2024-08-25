@@ -8,12 +8,17 @@ require("dotenv").config({
   path: path.resolve(__dirname, ".env"),
 });
 
+const { createResumeTable } = require("./models/resumeModel");
+const { createUserTable } = require("./models/userModel");
+
 const { initializeDatabase } = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const indexRoutes = require("./routes/index");
+const { create } = require("domain");
+const { createUser } = require("./models/userModel");
 
 const app = express();
 
@@ -43,5 +48,7 @@ app.use(errorHandler);
 
 // Initialize Database Tables
 initializeDatabase();
+createResumeTable();
+createUserTable();
 
 module.exports = app;

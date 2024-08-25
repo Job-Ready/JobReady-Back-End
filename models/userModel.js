@@ -1,4 +1,4 @@
-const pool = require("../config/db"); // Importing the pool instance
+const { pool } = require("../config/db"); // Importing the pool instance
 const bcrypt = require("bcrypt");
 
 const createUserTable = async () => {
@@ -12,6 +12,7 @@ const createUserTable = async () => {
     );
   `;
   await pool.query(query);
+  console.log("User table created successfully");
 };
 
 const createUser = async ({ fullname, email, password }) => {

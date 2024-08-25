@@ -1,8 +1,6 @@
 // src/config/db.js
 const { Pool } = require("pg");
 require("dotenv").config();
-const { createUserTable } = require("../models/userModel");
-const { createResumeTable } = require("../models/resumeModel");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -28,14 +26,6 @@ const initializeDatabase = async () => {
   try {
     await pool.connect();
     console.log("Database connection initialized");
-    try {
-      await createUserTable();
-      await createResumeTable();
-      console.log("Database tables created successfully");
-    } catch (error) {
-      console.error("Error creating database tables:", error);
-      process.exit(1);
-    }
   } catch (err) {
     console.error("Error initializing database connection", err);
     throw err; // Re-throw the error after logging it
