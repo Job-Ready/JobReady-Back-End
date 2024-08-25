@@ -11,7 +11,7 @@ const createUserTable = async () => {
       created_at TIMESTAMP DEFAULT NOW()
     );
   `;
-  await pool.query(query); // Correct use of pool.query
+  await pool.query(query);
 };
 
 const createUser = async ({ fullname, email, password }) => {
