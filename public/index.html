@@ -1,25 +1,49 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobReady API</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>JobReady API</h1>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobReady - API</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-    <section>
-        <h2>Features</h2>
-        <ul>
-            <li>/resume</li>
-            <li>/login</li>
-            <li>/signup</li>
-        </ul>
-    </section>
-    
-</body>
+  <body class="bg-gray-100 text-gray-900 font-sans">
+    <div class="min-h-screen flex items-center justify-center">
+      <div
+        class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full text-center"
+      >
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+          Welcome to the JobReady API
+        </h1>
+        <p class="text-gray-600 mb-6">
+          This is a simple and powerful API that allows you to [insert what your
+          API does here]. Please refer to the documentation below to get
+          started.
+        </p>
+
+        <div class="flex justify-center space-x-4 mb-6">
+          <a
+            href="/docs"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+          >
+            API Documentation
+          </a>
+          <a
+            href="https://github.com/Job-Ready/JobReady-Back-End"
+            target="_blank"
+            class="px-4 py-2 bg-gray-800 text-white rounded-lg shadow hover:bg-gray-900 transition"
+          >
+            GitHub Repo
+          </a>
+        </div>
+
+        <footer class="text-gray-500 text-sm">
+          &copy; 2024 JobReady. All rights reserved.
+        </footer>
+      </div>
+    </div>
+  </body>
 </html>
