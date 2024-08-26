@@ -12,7 +12,6 @@ const createUserTable = async () => {
     );
   `;
   await pool.query(query);
-  console.log("User table created successfully");
 };
 
 const createUser = async ({ fullname, email, password }) => {

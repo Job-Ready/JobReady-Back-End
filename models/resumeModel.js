@@ -14,9 +14,9 @@ const createResumeTable = async () => {
       portfolio VARCHAR(255),
       country VARCHAR(100),
       linkedin VARCHAR(255),
-      work_experiences JSONB,
-      projects JSONB,
-      education JSONB,
+      work_experiences TEXT[],
+      projects TEXT[],
+      education TEXT[],
       languages TEXT[],
       skills TEXT[],
       last_change TIMESTAMP DEFAULT NOW()

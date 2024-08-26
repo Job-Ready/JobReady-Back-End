@@ -17,8 +17,6 @@ const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const indexRoutes = require("./routes/index");
-const { create } = require("domain");
-const { createUser } = require("./models/userModel");
 
 const app = express();
 
