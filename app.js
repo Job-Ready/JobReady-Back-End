@@ -37,8 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
-app.use("/", indexRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/", indexRoutes, authRoutes);
 app.use("/api", resumeRoutes);
 
 // Error Handling Middleware
