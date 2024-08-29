@@ -78,6 +78,17 @@ const getResumeByUserId = async (user_id) => {
   return result.rows;
 };
 
+async function getResumeById(resumeId) {
+  try {
+    const resume = await pool.query("SELECT * FROM resumes WHERE id = $1", [
+      resumeId,
+    ]);
+    return resume.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
 const updateResume = async (resumeId, updates) => {
   const fields = [];
   const values = [];
@@ -111,5 +122,6 @@ module.exports = {
   createResumeTable,
   createResume,
   getResumeByUserId,
+  getResumeById,
   updateResume,
 };

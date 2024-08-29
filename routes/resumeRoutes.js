@@ -4,6 +4,7 @@ const authenticateToken = require("../middleware/auth");
 const {
   createResume,
   getResumeByUserId,
+  getResumeById,
   updateResume,
 } = require("../models/resumeModel");
 
@@ -27,6 +28,22 @@ router.get("/resumes", authenticateToken, async (req, res, next) => {
     const resumes = await getResumeByUserId(req.user.id);
 
     res.status(200).json({ resumes });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/resumes/:resumeId", authenticateToken, async (req, res, next) => {
+  try {
+    const { resumeId } = req.params;
+
+    const resume = await getResumeById(resumeId);
+
+    if (!resume) {
+      return res.status(404).json({ message: "Resume not found" });
+    }
+
+    res.status(200).json({ resume });
   } catch (error) {
     next(error);
   }
