@@ -28,9 +28,15 @@ app.use(
       "http://localhost:3000",
       "https://jobready-frontend-a5f107d0de7b.herokuapp.com",
     ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
+// Handle preflight requests
+app.options("*", cors());
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
