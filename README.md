@@ -44,7 +44,7 @@ This is an example of how to list things you need to use the software and how to
    ```
 3. Run the project
    ```sh
-   npm install
+   npm start
    ```
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
