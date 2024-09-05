@@ -14,8 +14,7 @@ Remember to get the front end too : https://github.com/Job-Ready/JobReady-Front-
 
 ### Built With
 
-* [![TypeScript][TypeScript.js]][TypeScript-url]
-* [![React][React.js]][React-url]
+* [![Express][Express.js]][Express-url]
 * [![Node.js][Node.js]][Node-url]
 
 
@@ -53,3 +52,5 @@ This is an example of how to list things you need to use the software and how to
 [TypeScript-url]: https://www.typescriptlang.org/
 [Node.js]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white
 [Node-url]: https://nodejs.org/
+[Express.js]: https://img.shields.io/badge/Express.js-404D59?style=for-the-badge
+[Express-url]: https://expressjs.com/
