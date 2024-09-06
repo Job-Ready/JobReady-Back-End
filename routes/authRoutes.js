@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { createUser, findUserByEmail } = require("../models/userModel");
+const authenticateToken = require("../middleware/auth");
 const bcrypt = require("bcrypt");
 
 router.post("/signup", async (req, res, next) => {
@@ -24,12 +25,10 @@ router.post("/signup", async (req, res, next) => {
       expiresIn: "1h",
     });
 
-    res
-      .status(201)
-      .json({
-        token,
-        user: { id: user.id, fullname: user.fullname, email: user.email },
-      });
+    res.status(201).json({
+      token,
+      user: { id: user.id, fullname: user.fullname, email: user.email },
+    });
   } catch (error) {
     next(error);
   }
@@ -59,12 +58,18 @@ router.post("/login", async (req, res, next) => {
       expiresIn: "1h",
     });
 
-    res
-      .status(200)
-      .json({
-        token,
-        user: { id: user.id, fullname: user.fullname, email: user.email },
-      });
+    res.status(200).json({
+      token,
+      user: { id: user.id, fullname: user.fullname, email: user.email },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/auth-token", authenticateToken, async (req, res, next) => {
+  try {
+    res.status(201).json({ message: "Valid Token" });
   } catch (error) {
     next(error);
   }
