@@ -8,9 +8,9 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: isProduction
     ? {
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
       }
-    : false,
+    : true,
 });
 
 pool.on("connect", () => {
