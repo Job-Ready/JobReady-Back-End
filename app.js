@@ -17,6 +17,7 @@ const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const indexRoutes = require("./routes/index");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Routes
 app.use("/", indexRoutes, authRoutes);
 app.use("/api", resumeRoutes);
+app.use("/user", userRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);
