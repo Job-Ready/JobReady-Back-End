@@ -67,12 +67,4 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.get("/auth-token", authenticateToken, async (req, res, next) => {
-  try {
-    res.status(201).json({ message: "Valid Token" });
-  } catch (error) {
-    next(error);
-  }
-});
-
 module.exports = router;
