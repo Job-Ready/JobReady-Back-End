@@ -25,10 +25,7 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://jobready-frontend-a5f107d0de7b.herokuapp.com",
-    ],
+    origin: ["http://localhost:3000", "https://jobready-front-end.fly.dev"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
