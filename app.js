@@ -42,10 +42,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
-app.use("/", indexRoutes, authRoutes);
+app.use("/", indexRoutes, authRoutes, emailRoutes);
 app.use("/api", resumeRoutes);
 app.use("/user", userRoutes);
-app.use("/send-email", emailRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);

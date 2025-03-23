@@ -3,8 +3,9 @@ const router = express.Router();
 const authenticateToken = require("../middleware/auth");
 const nodemailer = require("nodemailer");
 
-router.post("/send-email", authenticateToken, async (req, res) => {
+router.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
+  console.log(req);
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required" });
