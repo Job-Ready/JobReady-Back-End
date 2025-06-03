@@ -43,8 +43,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
 app.use("/", indexRoutes, authRoutes, emailRoutes);
-app.use("/api", resumeRoutes);
 app.use("/user", userRoutes);
+app.use("/api", resumeRoutes);
+
 
 // Error Handling Middleware
 app.use(errorHandler);
