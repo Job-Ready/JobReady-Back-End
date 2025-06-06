@@ -7,8 +7,8 @@ require("dotenv").config({
   path: path.resolve(__dirname, ".env"),
 });
 
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "0.0.0.0";
+const PORT = process.env.PORT || 8000;
+const HOST = process.env.HOST || "localhost";
 
 const server = http.createServer(app);
 
