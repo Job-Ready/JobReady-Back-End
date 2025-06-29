@@ -22,7 +22,7 @@ router.post("/signup", async (req, res, next) => {
     const user = await createUser({ fullname, email, password });
 
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "5h",
     });
 
     res.status(201).json({
@@ -55,7 +55,7 @@ router.post("/login", async (req, res, next) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "5h",
     });
 
     res.status(200).json({

@@ -14,7 +14,7 @@ const createResumeTable = async () => {
       portfolio VARCHAR(255),
       country VARCHAR(100),
       linkedin VARCHAR(255),
-      work_experiences TEXT[],
+      workexperiences TEXT[],
       projects TEXT[],
       education TEXT[],
       languages TEXT[],
@@ -36,7 +36,7 @@ const createResume = async (resumeData) => {
     portfolio,
     country,
     linkedin,
-    work_experiences,
+    workexperiences,
     projects,
     education,
     languages,
@@ -46,7 +46,7 @@ const createResume = async (resumeData) => {
   const query = `
     INSERT INTO resumes (
       user_id, fullname, title, email, phone, repos, portfolio,
-      country, linkedin, work_experiences, projects, education,
+      country, linkedin, workexperiences, projects, education,
       languages, skills
     )
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
@@ -62,7 +62,7 @@ const createResume = async (resumeData) => {
     portfolio,
     country,
     linkedin,
-    work_experiences,
+    workexperiences,
     projects,
     education,
     languages,
