@@ -14,11 +14,11 @@ const createResumeTable = async () => {
       portfolio VARCHAR(255),
       country VARCHAR(100),
       linkedin VARCHAR(255),
-      workexperiences TEXT[],
-      projects TEXT[],
-      education TEXT[],
-      languages TEXT[],
-      skills TEXT[],
+      work_experiences JSONB,
+      projects JSONB,
+      education JSONB,
+      languages JSONB,
+      skills JSONB,
       last_change TIMESTAMP DEFAULT NOW()
     );
   `;
@@ -36,7 +36,7 @@ const createResume = async (resumeData) => {
     portfolio,
     country,
     linkedin,
-    workexperiences,
+    work_experiences,
     projects,
     education,
     languages,
@@ -46,7 +46,7 @@ const createResume = async (resumeData) => {
   const query = `
     INSERT INTO resumes (
       user_id, fullname, title, email, phone, repos, portfolio,
-      country, linkedin, workexperiences, projects, education,
+      country, linkedin, work_experiences, projects, education,
       languages, skills
     )
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
@@ -62,7 +62,7 @@ const createResume = async (resumeData) => {
     portfolio,
     country,
     linkedin,
-    workexperiences,
+    work_experiences,
     projects,
     education,
     languages,
@@ -94,10 +94,20 @@ const updateResume = async (resumeId, updates) => {
   const values = [];
   let index = 1;
 
+  const jsonFields = new Set([
+    "work_experiences",
+    "projects",
+    "education",
+    "languages",
+    "skills",
+  ]);
+
   for (const [key, value] of Object.entries(updates)) {
     if (value !== undefined) {
+      // Stringify JSONB fields
+      const finalValue = jsonFields.has(key) ? JSON.stringify(value) : value;
       fields.push(`${key} = $${index}`);
-      values.push(value);
+      values.push(finalValue);
       index++;
     }
   }
